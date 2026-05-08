@@ -22,28 +22,39 @@ async function enviarMenu(remoteJid) {
             "text": "✅ Conexión exitosa. Ahora intentaré enviarte el menú..."
         }, { headers: { 'apikey': EVOLUTION_API_KEY } });
 
-        // PRUEBA 2: Enviar la lista (con el campo footerText corregido)
-        await axios.post(`${EVOLUTION_API_URL}/message/sendList/${EVOLUTION_INSTANCE}`, {
+        // PRUEBA 2: Enviar BOTONES (más estables que las listas para evitar errores internos)
+        await axios.post(`${EVOLUTION_API_URL}/message/sendButtons/${EVOLUTION_INSTANCE}`, {
             "number": number,
-            "title": "🤖 Menú Bot Michael",
-            "description": "¡Hola! Este es el menú de prueba elegante.",
-            "buttonText": "Ver opciones",
-            "footerText": "Prueba Exclusiva", // Aquí estaba el error
-            "sections": [
+            "text": "¡Hola Michael! Aquí tienes las opciones que pediste:",
+            "footer": "Bot Michael - Prueba de Botones",
+            "buttons": [
                 {
-                    "title": "Opciones de Prueba",
-                    "rows": [
-                        { "title": "💰 Ver Precios", "rowId": "op_precios", "description": "Consulta nuestras tarifas" },
-                        { "title": "⚙️ Soporte Técnico", "rowId": "op_soporte", "description": "Ayuda técnica inmediata" },
-                        { "title": "💬 Hablar con DeepSeek", "rowId": "op_ai", "description": "Inteligencia Artificial" }
-                    ]
+                    "type": "reply",
+                    "reply": {
+                        "text": "💰 Ver Precios",
+                        "id": "btn_precios"
+                    }
+                },
+                {
+                    "type": "reply",
+                    "reply": {
+                        "text": "⚙️ Soporte",
+                        "id": "btn_soporte"
+                    }
+                },
+                {
+                    "type": "reply",
+                    "reply": {
+                        "text": "💬 DeepSeek AI",
+                        "id": "btn_ai"
+                    }
                 }
             ]
         }, {
             headers: { 'apikey': EVOLUTION_API_KEY }
         });
         
-        console.log(`✅ Todo enviado correctamente a ${number}`);
+        console.log(`✅ Botones enviados correctamente a ${number}`);
     } catch (error) {
         console.error("❌ ERROR DETALLADO:");
         if (error.response) {
