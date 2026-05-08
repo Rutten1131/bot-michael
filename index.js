@@ -22,18 +22,20 @@ async function enviarMenu(remoteJid) {
             "text": "✅ Conexión exitosa. Ahora intentaré enviarte el menú..."
         }, { headers: { 'apikey': EVOLUTION_API_KEY } });
 
-        // PRUEBA 2: Enviar la lista (formato ultra-simplificado)
+        // PRUEBA 2: Enviar la lista (con el campo footerText corregido)
         await axios.post(`${EVOLUTION_API_URL}/message/sendList/${EVOLUTION_INSTANCE}`, {
             "number": number,
-            "title": "Menú Bot Michael",
-            "description": "Elige una opción:",
+            "title": "🤖 Menú Bot Michael",
+            "description": "¡Hola! Este es el menú de prueba elegante.",
             "buttonText": "Ver opciones",
+            "footerText": "Prueba Exclusiva", // Aquí estaba el error
             "sections": [
                 {
-                    "title": "Opciones",
+                    "title": "Opciones de Prueba",
                     "rows": [
-                        { "title": "Precios", "rowId": "1" },
-                        { "title": "Soporte", "rowId": "2" }
+                        { "title": "💰 Ver Precios", "rowId": "op_precios", "description": "Consulta nuestras tarifas" },
+                        { "title": "⚙️ Soporte Técnico", "rowId": "op_soporte", "description": "Ayuda técnica inmediata" },
+                        { "title": "💬 Hablar con DeepSeek", "rowId": "op_ai", "description": "Inteligencia Artificial" }
                     ]
                 }
             ]
