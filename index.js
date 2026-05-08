@@ -11,32 +11,44 @@ const MY_NUMBER = "593983237491"; // Tu número sin el +
 
 // FUNCIÓN PARA ENVIAR EL MENÚ DE LISTA
 async function enviarMenu(remoteJid) {
-    // Limpiamos el JID para que solo sea el número (Evolution v2 lo prefiere así)
     const number = remoteJid.split('@')[0];
     
     try {
+        console.log(`Intentando enviar mensaje a: ${number}`);
+        
+        // PRUEBA 1: Enviar texto simple para confirmar conexión
+        await axios.post(`${EVOLUTION_API_URL}/message/sendText/${EVOLUTION_INSTANCE}`, {
+            "number": number,
+            "text": "✅ Conexión exitosa. Ahora intentaré enviarte el menú..."
+        }, { headers: { 'apikey': EVOLUTION_API_KEY } });
+
+        // PRUEBA 2: Enviar la lista (formato ultra-simplificado)
         await axios.post(`${EVOLUTION_API_URL}/message/sendList/${EVOLUTION_INSTANCE}`, {
             "number": number,
-            "title": "🤖 Menú Bot Michael",
-            "description": "¡Hola! Este es el menú de prueba elegante.",
-            "buttonText": "Haz clic para ver opciones",
-            "footer": "Prueba Exclusiva",
+            "title": "Menú Bot Michael",
+            "description": "Elige una opción:",
+            "buttonText": "Ver opciones",
             "sections": [
                 {
-                    "title": "Opciones de Prueba",
+                    "title": "Opciones",
                     "rows": [
-                        { "title": "💰 Ver Precios", "rowId": "op_precios", "description": "Consulta nuestras tarifas" },
-                        { "title": "⚙️ Soporte", "rowId": "op_soporte", "description": "Ayuda técnica inmediata" },
-                        { "title": "💬 DeepSeek AI", "rowId": "op_ai", "description": "Hablar con la inteligencia artificial" }
+                        { "title": "Precios", "rowId": "1" },
+                        { "title": "Soporte", "rowId": "2" }
                     ]
                 }
             ]
         }, {
             headers: { 'apikey': EVOLUTION_API_KEY }
         });
-        console.log(`✅ Menú enviado a ${number}`);
+        
+        console.log(`✅ Todo enviado correctamente a ${number}`);
     } catch (error) {
-        console.error("❌ Error al enviar:", error.response ? error.response.data : error.message);
+        console.error("❌ ERROR DETALLADO:");
+        if (error.response) {
+            console.error(JSON.stringify(error.response.data, null, 2));
+        } else {
+            console.error(error.message);
+        }
     }
 }
 
