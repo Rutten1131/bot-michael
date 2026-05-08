@@ -11,29 +11,30 @@ const MY_NUMBER = "593983237491"; // Tu número sin el +
 
 // FUNCIÓN PARA ENVIAR EL MENÚ DE LISTA
 async function enviarMenu(remoteJid) {
+    // Limpiamos el JID para que solo sea el número (Evolution v2 lo prefiere así)
+    const number = remoteJid.split('@')[0];
+    
     try {
         await axios.post(`${EVOLUTION_API_URL}/message/sendList/${EVOLUTION_INSTANCE}`, {
-            "number": remoteJid,
-            "listMessage": {
-                "title": "🤖 Menú Bot Michael",
-                "description": "¡Hola! Este es el menú de prueba. Solo tú puedes verlo porque he configurado un filtro de seguridad.",
-                "buttonText": "Haz clic para ver opciones",
-                "footerText": "Prueba Exclusiva",
-                "sections": [
-                    {
-                        "title": "Opciones de Prueba",
-                        "rows": [
-                            { "title": "💰 Ver Precios", "rowId": "op_precios", "description": "Consulta nuestras tarifas" },
-                            { "title": "⚙️ Soporte", "rowId": "op_soporte", "description": "Ayuda técnica inmediata" },
-                            { "title": "💬 DeepSeek AI", "rowId": "op_ai", "description": "Hablar con la inteligencia artificial" }
-                        ]
-                    }
-                ]
-            }
+            "number": number,
+            "title": "🤖 Menú Bot Michael",
+            "description": "¡Hola! Este es el menú de prueba elegante.",
+            "buttonText": "Haz clic para ver opciones",
+            "footer": "Prueba Exclusiva",
+            "sections": [
+                {
+                    "title": "Opciones de Prueba",
+                    "rows": [
+                        { "title": "💰 Ver Precios", "rowId": "op_precios", "description": "Consulta nuestras tarifas" },
+                        { "title": "⚙️ Soporte", "rowId": "op_soporte", "description": "Ayuda técnica inmediata" },
+                        { "title": "💬 DeepSeek AI", "rowId": "op_ai", "description": "Hablar con la inteligencia artificial" }
+                    ]
+                }
+            ]
         }, {
             headers: { 'apikey': EVOLUTION_API_KEY }
         });
-        console.log(`✅ Menú enviado a ${remoteJid}`);
+        console.log(`✅ Menú enviado a ${number}`);
     } catch (error) {
         console.error("❌ Error al enviar:", error.response ? error.response.data : error.message);
     }
